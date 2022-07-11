@@ -13,6 +13,7 @@ import EditRecipe from "./components/Recipe/EditRecipe";
 import Main from "./components/Recipe/Main";
 import SingleRecipe from "./components/Recipe/SingleRecipe";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import Home from "./components/Recipe/Home";
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -26,6 +27,7 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route

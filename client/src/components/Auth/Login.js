@@ -21,7 +21,7 @@ const Login = ({ login, isAuthenticated }) => {
     return <Navigate to="/dashboard" />;
   }
   return (
-    <Fragment>
+    <div className="container">
       <h1 className="large text-primary">Sign In</h1>
       <p className="lead">
         <i className="fas fa-user"></i>Sign In Your Account
@@ -52,7 +52,7 @@ const Login = ({ login, isAuthenticated }) => {
       <p className="my-1">
         Dont' have an account? <Link to="/register">Sign Up</Link>
       </p>
-    </Fragment>
+    </div>
   );
 };
 Login.propTypes = {
