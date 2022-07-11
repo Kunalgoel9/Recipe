@@ -12,7 +12,7 @@ import {
 
 export const getRecipes = () => async (dispatch) => {
   try {
-    const res = await axios.get("/api/recipes");
+    const res = await axios.get("/api/recipe");
 
     dispatch({
       type: GET_RECIPES,

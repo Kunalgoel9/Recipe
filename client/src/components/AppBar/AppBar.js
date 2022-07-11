@@ -14,16 +14,14 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const apiLinks = (
     <ul>
       <li>
-        <Link to="/profiles">Developers</Link>
+        <Link to="/create-recipe">Create</Link>
+      </li>
+
+      <li>
+        <Link to="/">Login</Link>
       </li>
       <li>
-        <Link to="/posts">Posts</Link>
-      </li>
-      <li>
-        <Link to="/dashboard">
-          <i className="fas fa-user" />{" "}
-          <span className="hide=sm">Dashboard</span>
-        </Link>
+        <Link to="/register">Register</Link>
       </li>
       <li>
         {/* <a onClick={logout} href="#!">
@@ -36,13 +34,14 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const guestLinks = (
     <ul>
       <li>
-        <Link to="/profiles">Developers</Link>
+        <Link to="/create-recipe">Create</Link>
+      </li>
+
+      <li>
+        <Link to="/">Login</Link>
       </li>
       <li>
         <Link to="/register">Register</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
       </li>
     </ul>
   );
@@ -54,7 +53,7 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             <Link to="/">Recipe App</Link>
           </Typography>
-          {loading && (
+          {!loading && (
             <Typography>{isAuthenticated ? apiLinks : guestLinks}</Typography>
           )}
         </Toolbar>

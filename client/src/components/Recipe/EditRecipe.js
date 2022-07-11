@@ -1,10 +1,11 @@
 import { connect } from "react-redux";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./Recipe.css";
-import { updateRecipe } from "../../actions/recipe";
+import { updateRecipe, getRecipe } from "../../actions/recipe";
 import { useParams } from "react-router-dom";
+import Spinner from "../layout/Spinner";
 function EditRecipe({ updateRecipe, getRecipe, recipe }) {
   const { id } = useParams();
   const [ingredients, setIngredients] = useState([""]);
@@ -23,19 +24,10 @@ function EditRecipe({ updateRecipe, getRecipe, recipe }) {
   const handleStepChange = (e, index) => {
     setSteps(...steps.map((step) => (step[index] = e.target.value)));
   };
-  const handleAddIng = () => {
-    setIngredients([...ingredients, ingredient]);
-    setIngredient("");
-  };
-
-  const handleAddStep = () => {
-    setSteps([...steps, step]);
-    setStep("");
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ name, img, ingredients, steps, description });
+
     var formData = JSON.stringify({
       name,
       img,
@@ -45,13 +37,26 @@ function EditRecipe({ updateRecipe, getRecipe, recipe }) {
     });
     updateRecipe(formData, id);
     setName("");
-    setStep("");
-    setIngredient("");
+
     setDescription("");
     setSteps([""]);
     setIngredients([""]);
     setImg("");
   };
+  useEffect(() => {
+    getRecipe(id);
+    if (recipe) {
+      setName(recipe.name);
+      setDescription(recipe.description);
+      setSteps(recipe.steps);
+      setIngredients(recipe.ingredients);
+      setImg(recipe.img ? recipe.img : "");
+    }
+  }, [recipe]);
+
+  if (!recipe) {
+    return <Spinner />;
+  }
 
   return (
     <div
@@ -59,7 +64,7 @@ function EditRecipe({ updateRecipe, getRecipe, recipe }) {
       style={{ height: "800px", width: "70%", margin: "auto" }}
     >
       <div className="bg-primary p">
-        <h3>Add a Recipe </h3>
+        <h3>Edit Recipe </h3>
       </div>
       <form className="form my-1">
         <div>
@@ -91,29 +96,35 @@ function EditRecipe({ updateRecipe, getRecipe, recipe }) {
           />
         </div>
         <div>
-          {ingredients.map((ing, index) => (
-            <div>
-              <TextField
-                id="standard-basic"
-                label="Add Ingredient"
-                value={ing}
-                sx={{ width: "100%", margin: "1em auto" }}
-                onChange={(e) => handleIngChange(e, index)}
-              />
-            </div>
-          ))}
+          {ingredients.map(
+            (ing, index) =>
+              ing !== "" && (
+                <div>
+                  <TextField
+                    id="standard-basic"
+                    label="Add Ingredient"
+                    value={ing}
+                    sx={{ width: "100%", margin: "1em auto" }}
+                    onChange={(e) => handleIngChange(e, index)}
+                  />
+                </div>
+              ),
+          )}
         </div>
-        {steps.map((currstep, index) => (
-          <div>
-            <TextField
-              id="standard-basic"
-              label="Add Step"
-              value={currstep}
-              sx={{ width: "100%", margin: "1em auto" }}
-              onChange={(e) => handleStepChange(e, index)}
-            />
-          </div>
-        ))}
+        {steps.map(
+          (currstep, index) =>
+            currstep !== "" && (
+              <div>
+                <TextField
+                  id="standard-basic"
+                  label="Add Step"
+                  value={currstep}
+                  sx={{ width: "100%", margin: "1em auto" }}
+                  onChange={(e) => handleStepChange(e, index)}
+                />
+              </div>
+            ),
+        )}
 
         <Button
           className="btn"
