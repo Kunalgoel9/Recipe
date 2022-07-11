@@ -9,7 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import "./AppBar.css";
+
 const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const apiLinks = (
     <ul>
@@ -26,10 +26,10 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
         </Link>
       </li>
       <li>
-        {/* <a onClick={logout} href="#!">
+        <a onClick={logout} href="#!">
           <i className="fas fa-sign-out-alt" />{" "}
           <span className="hide=sm"> LOG OUT</span>
-        </a> */}
+        </a>
       </li>
     </ul>
   );
@@ -49,20 +49,34 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" className="navbar">
+      <AppBar position="static">
         <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          ></IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link to="/">Recipe App</Link>
+            <Link to="/">
+              <i className="fas fa-code"></i> DevConnector
+            </Link>
           </Typography>
-          {loading && (
-            <Typography>{isAuthenticated ? apiLinks : guestLinks}</Typography>
+          {!loading && (
+            <Button color="inherit">
+              {isAuthenticated ? apiLinks : guestLinks}
+            </Button>
           )}
         </Toolbar>
       </AppBar>
     </Box>
   );
 };
-
+NavBar.protoTypes = {
+  logout: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+};
 const mapStateToProps = (state) => ({
   auth: state.auth,
 });

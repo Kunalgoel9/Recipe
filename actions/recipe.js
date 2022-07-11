@@ -60,7 +60,7 @@ export const addRecipe = (formData) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.post("/api/recipe", formData, config);
+    const res = await axios.recipe("/api/recipes/", formData, config);
 
     dispatch({
       type: ADD_RECIPE,
@@ -68,7 +68,6 @@ export const addRecipe = (formData) => async (dispatch) => {
     });
     dispatch(setAlert("Recipe Added", "success"));
   } catch (err) {
-    console.log(err);
     dispatch({
       type: RECIPE_ERROR,
       payload: {
@@ -78,7 +77,7 @@ export const addRecipe = (formData) => async (dispatch) => {
     });
   }
 };
-export const updateRecipe = (formData, id) => async (dispatch) => {
+export const updateRecipe = (formData) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -86,15 +85,14 @@ export const updateRecipe = (formData, id) => async (dispatch) => {
   };
 
   try {
-    const res = await axios.put(`/api/recipe/${id}`, formData, config);
+    const res = await axios.recipe("/api/recipes/", formData, config);
 
     dispatch({
       type: UPDATE_RECIPE,
       payload: res.data,
     });
-    dispatch(setAlert("Recipe Updated", "success"));
+    dispatch(setAlert("Recipe Added", "success"));
   } catch (err) {
-    console.log(err);
     dispatch({
       type: RECIPE_ERROR,
       payload: {
@@ -106,7 +104,7 @@ export const updateRecipe = (formData, id) => async (dispatch) => {
 };
 export const getRecipe = (id) => async (dispatch) => {
   try {
-    const res = await axios.get(`/api/recipe/${id}`);
+    const res = await axios.get(`/api/recipes/${id}`);
 
     dispatch({
       type: GET_RECIPE,

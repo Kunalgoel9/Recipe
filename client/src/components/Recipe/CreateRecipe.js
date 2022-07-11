@@ -1,10 +1,16 @@
-import { connect } from "mongoose";
+import { connect } from "react-redux";
 import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import "./Recipe.css";
+import { addRecipe } from "../../actions/recipe";
+function CreateRecipe({ addRecipe }) {
+  const [ingredients, setIngredients] = useState([""]);
 
-function CreateRecipe({ recipe }) {
-  const [ingredients, setIngredients] = useState([]);
+  const [steps, setSteps] = useState([""]);
+  const [ingredient, setIngredient] = useState("");
 
-  const [steps, setSteps] = useState([]);
+  const [step, setStep] = useState("");
 
   const [name, setName] = useState("");
 
@@ -12,107 +18,131 @@ function CreateRecipe({ recipe }) {
 
   const [description, setDescription] = useState("");
 
-  const handleIngChange = (e, index) => {
-    setIngredients(...ingredients.map((ing) => (ing[index] = e.target.value)));
+  // const handleIngChange = (e, index) => {
+  //   setIngredients(...ingredients.map((ing) => (ing[index] = e.target.value)));
+  // };
+
+  const handleAddIng = () => {
+    setIngredients([...ingredients, ingredient]);
+    setIngredient("");
   };
 
-  const handleAddIng = (ing) => {
-    setIngredients([...ingredients, ing]);
-  };
-
-  const handleStepChange = (e, index) => {
-    setSteps(...steps.map((step) => (step[index] = e.target.value)));
-  };
-
-  const handleAddStep = (step) => {
+  const handleAddStep = () => {
     setSteps([...steps, step]);
+    setStep("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ name, img, ingredients, steps, description });
+    var formData = JSON.stringify({
+      name,
+      img,
+      ingredients,
+      steps,
+      description,
+    });
+    addRecipe(formData);
+    setName("");
+    setStep("");
+    setIngredient("");
+    setDescription("");
+    setSteps([""]);
+    setIngredients([""]);
+    setImg("");
   };
-  if (recipe) {
-    console.log(recipe);
-  }
 
   return (
-    <div className="post-form">
+    <div
+      className="post-form"
+      style={{ height: "800px", width: "70%", margin: "auto" }}
+    >
       <div className="bg-primary p">
-        <h3>Say Something...</h3>
+        <h3>Add a Recipe </h3>
       </div>
       <form className="form my-1">
-        <TextField
-          id="standard-basic"
-          label="Add Step"
-          variant="standard"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <TextField
-          id="standard-basic"
-          label="Add Step"
-          variant="standard"
-          value={img}
-          onChange={(e) => setImg(e.target.value)}
-        />
-        <TextField
-          id="standard-basic"
-          label="Add Step"
-          variant="standard"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        {ingredients.length > 0 ? (
-          ingredients.map((ing, index) => (
+        <div>
+          <TextField
+            id="standard-basic"
+            label="Add Name"
+            type="text"
+            sx={{ width: "100%", margin: "1em auto" }}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            id="standard-basic"
+            label="Add Image Url"
+            value={img}
+            sx={{ width: "100%", margin: "1em auto" }}
+            onChange={(e) => setImg(e.target.value)}
+          />
+        </div>
+        <div>
+          <TextField
+            id="standard-basic"
+            label="Add Description"
+            value={description}
+            sx={{ width: "100%", margin: "1em auto" }}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          {ingredients.map((ing, index) => (
             <div>
               <TextField
                 id="standard-basic"
                 label="Add Ingredient"
-                variant="standard"
-                value={ing}
-                onChange={(e) => handleIngChange(e, index)}
+                value={ing ? ing : ingredient}
+                sx={{ width: "100%", margin: "1em auto" }}
+                onChange={(e) => setIngredient(e.target.value)}
               />
-              <Button onClick={() => handleAddIng(e.target.value)}>Add</Button>
+              {!ing && (
+                <Button
+                  className="btn"
+                  variant="contained"
+                  onClick={() => handleAddIng()}
+                >
+                  Add
+                </Button>
+              )}
             </div>
-          ))
-        ) : (
-          <TextField
-            id="standard-basic"
-            label="Add Ingredient"
-            variant="standard"
-            onChange={(e) => handleIngChange(e, 0)}
-          />
-        )}
-        {steps.length > 0 ? (
-          steps.map((step, index) => (
-            <div>
-              <TextField
-                id="standard-basic"
-                label="Add Step"
-                variant="standard"
-                value={step}
-                onChange={(e) => handleStepChange(e, index)}
-              />
-              <Button onClick={() => handleAddStep(e.target.value)}>Add</Button>
-            </div>
-          ))
-        ) : (
-          <TextField
-            id="standard-basic"
-            label="Add Step"
-            variant="standard"
-            onChange={(e) => handleStepChange(e, 0)}
-          />
-        )}
+          ))}
+        </div>
+        {steps.map((currstep, index) => (
+          <div>
+            <TextField
+              id="standard-basic"
+              label="Add Step"
+              value={currstep ? currstep : step}
+              sx={{ width: "100%", margin: "1em auto" }}
+              onChange={(e) => setStep(e.target.value)}
+            />
 
-        <Button onClick={(e) => handleSubmit(e)}>Submit</Button>
+            {!currstep && (
+              <Button
+                className="btn"
+                variant="contained"
+                onClick={() => handleAddStep()}
+              >
+                Add
+              </Button>
+            )}
+          </div>
+        ))}
+
+        <Button
+          className="btn"
+          variant="contained"
+          onClick={(e) => handleSubmit(e)}
+        >
+          Submit
+        </Button>
       </form>
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  recipe: state.recipe.recipe,
-});
-export default connect(mapStateToProps)(CreateRecipe);
+export default connect(null, { addRecipe })(CreateRecipe);
