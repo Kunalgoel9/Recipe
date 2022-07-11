@@ -96,6 +96,7 @@ function CreateRecipe({ addRecipe }) {
                 id="standard-basic"
                 label="Add Ingredient"
                 value={ing ? ing : ingredient}
+                disabled={ing ? true : false}
                 sx={{ width: "100%", margin: "1em auto" }}
                 onChange={(e) => setIngredient(e.target.value)}
               />
@@ -117,6 +118,7 @@ function CreateRecipe({ addRecipe }) {
               id="standard-basic"
               label="Add Step"
               value={currstep ? currstep : step}
+              disabled={currstep ? true : false}
               sx={{ width: "100%", margin: "1em auto" }}
               onChange={(e) => setStep(e.target.value)}
             />
