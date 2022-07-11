@@ -18,27 +18,24 @@ const NavBar = ({ auth: { isAuthenticated, loading }, logout }) => {
       </li>
 
       <li>
-        <Link to="/">Login</Link>
+        <Link to="/dashboard">Dashboard</Link>
       </li>
+
       <li>
-        <Link to="/register">Register</Link>
-      </li>
-      <li>
-        {/* <a onClick={logout} href="#!">
-          <i className="fas fa-sign-out-alt" />{" "}
-          <span className="hide=sm"> LOG OUT</span>
-        </a> */}
+        <Link to="/login" onClick={logout}>
+          Logout
+        </Link>
       </li>
     </ul>
   );
   const guestLinks = (
     <ul>
       <li>
-        <Link to="/create-recipe">Create</Link>
+        <Link to="/">Home</Link>
       </li>
 
       <li>
-        <Link to="/">Login</Link>
+        <Link to="/login">Login</Link>
       </li>
       <li>
         <Link to="/register">Register</Link>

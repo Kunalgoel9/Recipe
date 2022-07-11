@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import setAuthtoken from "./utils/setAuthToken";
 import EditRecipe from "./components/Recipe/EditRecipe";
 import Main from "./components/Recipe/Main";
+import SingleRecipe from "./components/Recipe/SingleRecipe";
+import PrivateRoute from "./components/routing/PrivateRoute";
 function App() {
   useEffect(() => {
     store.dispatch(loadUser());
@@ -24,11 +26,40 @@ function App() {
       <BrowserRouter>
         <NavBar />
         <Routes>
-          <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/create-recipe" element={<CreateRecipe />} />
-          <Route path="/edit-recipe/:id" element={<EditRecipe />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <Main />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/create-recipe"
+            element={
+              <PrivateRoute>
+                <CreateRecipe />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-recipe/:id"
+            element={
+              <PrivateRoute>
+                <EditRecipe />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/dashboard/:id"
+            element={
+              <PrivateRoute>
+                <SingleRecipe />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </Provider>

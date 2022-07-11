@@ -8,8 +8,15 @@ import Typography from "@mui/material/Typography";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Navigate, useNavigate } from "react-router-dom";
-const RecipeCard = ({ recipe }) => {
+import { deleteRecipe } from "../../actions/recipe";
+import { connect } from "react-redux";
+const RecipeCard = ({ recipe, deleteRecipe }) => {
   const navigate = useNavigate();
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure want to Delete ?")) {
+      deleteRecipe(id);
+    }
+  };
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -17,6 +24,7 @@ const RecipeCard = ({ recipe }) => {
         alt="green iguana"
         height="140"
         style={{ objectFit: "contain" }}
+        onClick={() => navigate(`/dashboard/${recipe._id}`)}
         image={
           recipe.img
             ? recipe.img
@@ -36,10 +44,11 @@ const RecipeCard = ({ recipe }) => {
           <EditIcon onClick={() => navigate(`/edit-recipe/${recipe._id}`)} />
         </Button>
         <Button size="small">
-          <DeleteIcon />
+          <DeleteIcon onClick={() => handleDelete(recipe._id)} />
         </Button>
       </CardActions>
     </Card>
   );
 };
-export default RecipeCard;
+
+export default connect(null, { deleteRecipe })(RecipeCard);

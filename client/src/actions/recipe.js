@@ -34,7 +34,7 @@ export const getRecipes = () => async (dispatch) => {
 
 export const deleteRecipe = (id) => async (dispatch) => {
   try {
-    await axios.delete(`/api/recipes/${id}`);
+    await axios.delete(`/api/recipe/${id}`);
 
     dispatch({
       type: DELETE_RECIPE,

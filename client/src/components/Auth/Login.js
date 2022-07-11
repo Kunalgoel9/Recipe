@@ -18,7 +18,7 @@ const Login = ({ login, isAuthenticated }) => {
   };
 
   if (isAuthenticated === true) {
-    return <Navigate to="/create-recipe" />;
+    return <Navigate to="/dashboard" />;
   }
   return (
     <Fragment>
